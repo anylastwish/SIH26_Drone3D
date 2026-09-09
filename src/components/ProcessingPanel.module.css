@@ -1,0 +1,218 @@
+/* ProcessingPanel.module.css */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-dim);
+  border: 1px solid var(--color-border-focus);
+  color: var(--color-accent);
+  flex-shrink: 0;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.headerIconDone {
+  background: rgba(34, 211, 165, 0.12);
+  border-color: rgba(34, 211, 165, 0.4);
+  color: var(--color-success);
+}
+
+.headerIconError {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.35);
+  color: var(--color-error);
+}
+
+/* Spinning loader icon */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spinIcon {
+  animation: spin 1.2s linear infinite;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.statusText {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0 0 var(--space-lg) 0;
+}
+
+/* ── Step list ─────────────────────────────────────────────── */
+
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-base);
+}
+
+.step_pending {
+  opacity: 0.4;
+}
+
+.step_active {
+  background: rgba(61, 139, 255, 0.06);
+}
+
+.step_done {
+  opacity: 0.8;
+}
+
+.stepIndicator {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Done: checkmark */
+.step_done .stepIndicator {
+  color: var(--color-success);
+}
+
+/* Active: pulsing dot */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+
+.activePulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent-glow);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* Pending: muted dot */
+.pendingDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-border);
+}
+
+.stepLabel {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.step_active .stepLabel {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.step_done .stepLabel {
+  color: var(--color-text-secondary);
+}
+
+.step_pending .stepLabel {
+  color: var(--color-text-muted);
+}
+
+/* ── Progress bar ──────────────────────────────────────────── */
+
+.progressSection {
+  margin-top: 4px;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.progressLabel {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.progressValue {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.progressTrack {
+  height: 4px;
+  background: rgba(100, 140, 200, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) 0%,
+    #7ec8ff 50%,
+    var(--color-accent) 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 1.8s linear infinite;
+  transition: width 0.4s ease;
+}
+
+/* ── Error state ───────────────────────────────────────────── */
+
+.errorBox {
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: var(--radius-sm);
+}
+
+.errorText {
+  font-size: 12.5px;
+  color: var(--color-error);
+}

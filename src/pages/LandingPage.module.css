@@ -1,0 +1,95 @@
+/* LandingPage.module.css */
+
+.root {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Subtle dot grid */
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(61, 139, 255, 0.12) 1px,
+    transparent 1px
+  );
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* Radial ambient glow */
+.glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(61, 139, 255, 0.07) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Center stack */
+.center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+/* Brand mark icon */
+.brandMark {
+  color: var(--color-accent);
+  opacity: 0.6;
+}
+
+/* Enter button */
+@keyframes btnGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(61, 139, 255, 0.25); }
+  50%       { box-shadow: 0 0 36px rgba(61, 139, 255, 0.45); }
+}
+
+.enterBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 14px 32px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(61, 139, 255, 0.35);
+  background: rgba(61, 139, 255, 0.1);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  animation: btnGlow 2.5s ease-in-out infinite;
+  transition:
+    background var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base),
+    transform var(--transition-fast);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.enterBtn:hover {
+  background: rgba(61, 139, 255, 0.2);
+  border-color: rgba(61, 139, 255, 0.6);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.enterBtn:active {
+  transform: translateY(0);
+}

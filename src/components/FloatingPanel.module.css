@@ -1,0 +1,38 @@
+/* FloatingPanel.module.css */
+
+.panel {
+  position: relative;
+  width: 400px;
+  max-width: calc(100vw - 48px);
+
+  /* Frosted glass */
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+
+  /* Padding */
+  padding: var(--space-xl) var(--space-xl);
+
+  /* Subtle top highlight line */
+  overflow: hidden;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(100, 160, 255, 0.4) 30%,
+    rgba(100, 200, 255, 0.6) 50%,
+    rgba(100, 160, 255, 0.4) 70%,
+    transparent 100%
+  );
+}
