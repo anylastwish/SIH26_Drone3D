@@ -32,13 +32,18 @@ const ION_TOKEN = import.meta.env.VITE_CESIUM_ION_ACCESS_TOKEN as string | undef
  * camera will fly to the model's actual geographic coordinates.
  */
 /**
- * Default camera position: India centered
- * Coordinates: ~22.0° N, 78.9° E, height ~3,800,000m for full view of Indian subcontinent
+ * Default camera position matching orbital perspective:
+ * - Earth occupies the lower portion with visible curvature/limb
+ * - Upper portion is outer space with stars
+ * - Centered on India with the Himalayas and surrounding region in view
  */
 const DEFAULT_CAMERA = {
-  longitude: 78.9629,
-  latitude: 22.0,
-  height: 3800000,
+  longitude: 80.0,
+  latitude: 6.5,
+  height: 7200000,
+  heading: Cesium.Math.toRadians(14),
+  pitch: Cesium.Math.toRadians(-32.5),
+  roll: 0,
 } as const
 
 export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
@@ -80,7 +85,7 @@ export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
     const creditContainer = viewer.cesiumWidget.creditContainer as HTMLElement
     creditContainer.style.display = 'none'
 
-    // Initial camera: set view directly to India (steady, zero camera drift/flight)
+    // Initial camera: set view directly to orbital India perspective (steady, no drift)
     viewer.camera.setView({
       destination: Cesium.Cartesian3.fromDegrees(
         DEFAULT_CAMERA.longitude,
@@ -88,11 +93,27 @@ export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
         DEFAULT_CAMERA.height,
       ),
       orientation: {
-        heading: Cesium.Math.toRadians(0),
-        pitch: Cesium.Math.toRadians(-90),
-        roll: 0,
+        heading: DEFAULT_CAMERA.heading,
+        pitch: DEFAULT_CAMERA.pitch,
+        roll: DEFAULT_CAMERA.roll,
       },
     })
+
+    // Dev helper to inspect camera in console: window.getCamera()
+    if (typeof window !== 'undefined') {
+      (window as unknown as { getCamera: () => object }).getCamera = () => {
+        const c = viewer.camera
+        const carto = Cesium.Cartographic.fromCartesian(c.position)
+        return {
+          longitude: Number(Cesium.Math.toDegrees(carto.longitude).toFixed(4)),
+          latitude: Number(Cesium.Math.toDegrees(carto.latitude).toFixed(4)),
+          height: Math.round(carto.height),
+          headingDeg: Number(Cesium.Math.toDegrees(c.heading).toFixed(2)),
+          pitchDeg: Number(Cesium.Math.toDegrees(c.pitch).toFixed(2)),
+          rollDeg: Number(Cesium.Math.toDegrees(c.roll).toFixed(2)),
+        }
+      }
+    }
 
     viewerRef.current = viewer
 
