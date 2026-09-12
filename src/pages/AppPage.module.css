@@ -86,3 +86,43 @@
   color: var(--color-text-primary);
   background: var(--color-surface-hover);
 }
+
+/* TOP BAR: Floating toggle button for 3D Reconstruction panel */
+.topControlOverlay {
+  position: absolute;
+  top: var(--space-xl);
+  left: var(--space-xl);
+  z-index: 10;
+  pointer-events: all;
+}
+
+.openPanelBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition:
+    border-color var(--transition-base),
+    color var(--transition-base),
+    background var(--transition-base),
+    transform var(--transition-fast);
+}
+
+.openPanelBtn:hover {
+  border-color: var(--color-border-focus);
+  background: var(--color-surface-hover);
+  color: #fff;
+  transform: translateY(-1px);
+}
+

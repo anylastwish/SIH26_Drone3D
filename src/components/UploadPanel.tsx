@@ -19,6 +19,7 @@ const ACCEPTED_CSV_TYPES   = ['text/csv', 'text/plain', 'application/csv', 'appl
 
 interface UploadPanelProps {
   onGenerate: (files: UploadedFiles) => void
+  onClose?: () => void
 }
 
 function validateVideoFile(file: File): string | null {
@@ -41,7 +42,7 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-export function UploadPanel({ onGenerate }: UploadPanelProps) {
+export function UploadPanel({ onGenerate, onClose }: UploadPanelProps) {
   const [video, setVideo]       = useState<File | null>(null)
   const [gpsCSV, setGpsCSV]     = useState<File | null>(null)
   const [videoError, setVideoError] = useState<string | null>(null)
@@ -93,10 +94,20 @@ export function UploadPanel({ onGenerate }: UploadPanelProps) {
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
-        <div>
+        <div className={styles.headerText}>
           <h1 className={styles.title}>3D Reconstruction</h1>
           <p className={styles.subtitle}>Drone Video · GPS Data</p>
         </div>
+        {onClose && (
+          <button
+            type="button"
+            className={styles.closeBtn}
+            onClick={onClose}
+            aria-label="Close upload panel"
+          >
+            ✕
+          </button>
+        )}
       </div>
 
       <div className={styles.divider} />

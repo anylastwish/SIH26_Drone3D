@@ -31,10 +31,14 @@ const ION_TOKEN = import.meta.env.VITE_CESIUM_ION_ACCESS_TOKEN as string | undef
  * FUTURE: When georeferenced reconstruction metadata is available, the
  * camera will fly to the model's actual geographic coordinates.
  */
+/**
+ * Default camera position: India centered
+ * Coordinates: ~22.0° N, 78.9° E, height ~3,800,000m for full view of Indian subcontinent
+ */
 const DEFAULT_CAMERA = {
-  longitude: -97.764242,
-  latitude: 30.276501,
-  height: 2000,
+  longitude: 78.9629,
+  latitude: 22.0,
+  height: 3800000,
 } as const
 
 export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
@@ -76,8 +80,8 @@ export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
     const creditContainer = viewer.cesiumWidget.creditContainer as HTMLElement
     creditContainer.style.display = 'none'
 
-    // Initial camera: fly to default area
-    viewer.camera.flyTo({
+    // Initial camera: set view directly to India (steady, zero camera drift/flight)
+    viewer.camera.setView({
       destination: Cesium.Cartesian3.fromDegrees(
         DEFAULT_CAMERA.longitude,
         DEFAULT_CAMERA.latitude,
@@ -85,10 +89,9 @@ export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
       ),
       orientation: {
         heading: Cesium.Math.toRadians(0),
-        pitch: Cesium.Math.toRadians(-45),
+        pitch: Cesium.Math.toRadians(-90),
         roll: 0,
       },
-      duration: 0, // Instant on load
     })
 
     viewerRef.current = viewer
@@ -128,7 +131,7 @@ export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
     const modelPosition = Cesium.Cartesian3.fromDegrees(
       DEFAULT_CAMERA.longitude,
       DEFAULT_CAMERA.latitude,
-      DEFAULT_CAMERA.height - 1960, // Near ground level
+      100, // Ground level
     )
 
     const entity = viewer.entities.add({
