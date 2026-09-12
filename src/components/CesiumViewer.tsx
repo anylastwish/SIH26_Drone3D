@@ -32,18 +32,13 @@ const ION_TOKEN = import.meta.env.VITE_CESIUM_ION_ACCESS_TOKEN as string | undef
  * camera will fly to the model's actual geographic coordinates.
  */
 /**
- * Default camera position matching orbital perspective:
- * - Earth occupies the lower portion with visible curvature/limb
- * - Upper portion is outer space with stars
- * - Centered on India with the Himalayas and surrounding region in view
+ * Default view matching reference screenshot:
+ * Centered over North America / Texas with Earth curvature spanning across
+ * the lower half of the screen, and black starry space filling the upper half.
  */
-const DEFAULT_CAMERA = {
-  longitude: 80.0,
-  latitude: 6.5,
-  height: 7200000,
-  heading: Cesium.Math.toRadians(14),
-  pitch: Cesium.Math.toRadians(-32.5),
-  roll: 0,
+const DEFAULT_TARGET = {
+  longitude: -97.764242,
+  latitude: 30.276501,
 } as const
 
 export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
@@ -85,19 +80,22 @@ export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
     const creditContainer = viewer.cesiumWidget.creditContainer as HTMLElement
     creditContainer.style.display = 'none'
 
-    // Initial camera: set view directly to orbital India perspective (steady, no drift)
-    viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(
-        DEFAULT_CAMERA.longitude,
-        DEFAULT_CAMERA.latitude,
-        DEFAULT_CAMERA.height,
+    // Set camera view matching reference screenshot (Earth dome across lower half, starry space above)
+    const target = Cesium.Cartesian3.fromDegrees(
+      DEFAULT_TARGET.longitude,
+      DEFAULT_TARGET.latitude,
+      0,
+    )
+    viewer.camera.lookAt(
+      target,
+      new Cesium.HeadingPitchRange(
+        Cesium.Math.toRadians(0),
+        Cesium.Math.toRadians(-38),
+        8200000,
       ),
-      orientation: {
-        heading: DEFAULT_CAMERA.heading,
-        pitch: DEFAULT_CAMERA.pitch,
-        roll: DEFAULT_CAMERA.roll,
-      },
-    })
+    )
+    // Unlock camera transform so the user can interact (rotate, pan, zoom) freely
+    viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY)
 
     // Dev helper to inspect camera in console: window.getCamera()
     if (typeof window !== 'undefined') {
@@ -150,8 +148,8 @@ export function CesiumViewer({ modelUrl }: CesiumViewerProps) {
      * and apply the heading from anchor.headingDegrees.
      */
     const modelPosition = Cesium.Cartesian3.fromDegrees(
-      DEFAULT_CAMERA.longitude,
-      DEFAULT_CAMERA.latitude,
+      DEFAULT_TARGET.longitude,
+      DEFAULT_TARGET.latitude,
       100, // Ground level
     )
 
